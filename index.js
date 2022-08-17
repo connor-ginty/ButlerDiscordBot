@@ -12,10 +12,6 @@ const cocktailUrl = process.env.COCKTAIL_URL;
 const activityUrl = process.env.ACTIVITY_URL;
 const dogPicUrl = process.env.DOG_PIC_URL;
 
-//imports
-import { makeDrink } from './cocktail';
-
-
 const prefix = '!';
 
 const client = new Discord.Client({
