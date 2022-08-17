@@ -73,33 +73,31 @@ client.on('messageCreate', async message => {
 
     //cocktail command
     if (command === 'cocktail' || command === 'drink') {
-        makeDrink();
+        let getCocktail = async () => {
+            let response = await axios.get(cocktailUrl);
+            let cocktail = response.data;
+            return cocktail;
+        };
+        let cocktailValue = await getCocktail();
+        console.log(cocktailValue);
+        let cocktailMessage = cocktailValue.drinks[0]["strDrinkThumb"] + "\n";
+        cocktailMessage += "\n" + cocktailValue.drinks[0]["strDrink"] + "\n\nIngredients: \n";
+        for (var i = 1; i < 15; i++) {
+            let thisIngredient = cocktailValue.drinks[0]["strIngredient" + i.toString()]
+            let thisMeasurement = cocktailValue.drinks[0]["strMeasure" + i.toString()]
+            if (thisIngredient !== null) {
+                if (thisMeasurement !== null) {
+                    cocktailMessage += thisMeasurement + " ";
+                }
+                cocktailMessage += thisIngredient + "\n"
+            }
+            else {
+                break;
+            }
+        }
+        cocktailMessage += "\n" + cocktailValue.drinks[0]["strInstructions"];
+        message.reply(`I do hope you enjoy this drink I made for you, ` + message.author.username + `. \n\n` + cocktailMessage);
     }
-    //     let getCocktail = async () => {
-    //         let response = await axios.get(cocktailUrl);
-    //         let cocktail = response.data;
-    //         return cocktail;
-    //     };
-    //     let cocktailValue = await getCocktail();
-    //     console.log(cocktailValue);
-    //     let cocktailMessage = cocktailValue.drinks[0]["strDrinkThumb"] + "\n";
-    //     cocktailMessage += "\n" + cocktailValue.drinks[0]["strDrink"] + "\n\nIngredients: \n";
-    //     for (var i = 1; i < 15; i++) {
-    //         let thisIngredient = cocktailValue.drinks[0]["strIngredient" + i.toString()]
-    //         let thisMeasurement = cocktailValue.drinks[0]["strMeasure" + i.toString()]
-    //         if (thisIngredient !== null) {
-    //             if (thisMeasurement !== null) {
-    //                 cocktailMessage += thisMeasurement + " ";
-    //             }
-    //             cocktailMessage += thisIngredient + "\n"
-    //         }
-    //         else {
-    //             break;
-    //         }
-    //     }
-    //     cocktailMessage += "\n" + cocktailValue.drinks[0]["strInstructions"];
-    //     message.reply(`I do hope you enjoy this drink I made for you, ` + message.author.username + `. \n\n` + cocktailMessage);
-    // }
 
     //random activity
     if (command === 'activity' || command === 'bored') {
